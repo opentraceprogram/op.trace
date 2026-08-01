@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>OpenTrace</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Fondo animado estilo "lluvia de matrix" -->
+  <canvas id="matrix-bg"></canvas>
+
+  <div class="crt-overlay"></div>
+
+  <main class="terminal">
+
+    <header class="terminal-header">
+      <span class="dot dot-red"></span>
+      <span class="dot dot-yellow"></span>
+      <span class="dot dot-green"></span>
+      <span class="header-title">opentrace@terminal:~</span>
+    </header>
+
+    <!-- PANTALLA 1: solo el numero de telefono -->
+    <section id="pantalla-telefono" class="pantalla">
+      <p class="etiqueta">&gt; Creado por OpenTrace - Contacto WhatsApp: +34 605 45 77 15</p>
+
+      <label>TELEFONO <span class="hint">(+XX...)</span>
+        <input type="text" id="telefono" autocomplete="off" spellcheck="false">
+      </label>
+
+      <button id="btn-continuar" class="btn-terminal">CONTINUAR</button>
+      <p class="mensaje-error" id="error-telefono"></p>
+    </section>
+
+    <!-- PANTALLA 2: instrucciones + API_ID / API_HASH -->
+    <section id="pantalla-api" class="pantalla oculto">
+      <p class="etiqueta">&gt; obtener_credenciales</p>
+
+      <div class="instrucciones">
+        <p>Para continuar necesitas un <strong>API_ID</strong> y un <strong>API_HASH</strong>.
+        Son gratuitos y los da la propia Telegram:</p>
+        <ol>
+          <li>Entra en <a href="https://my.telegram.org" target="_blank" rel="noopener">my.telegram.org</a> desde tu navegador.</li>
+          <li>Inicia sesion con el mismo numero que has puesto: <span id="telefono-recordatorio"></span></li>
+          <li>Pulsa en <strong>"API development tools"</strong>.</li>
+          <li>Rellena el formulario (puedes poner cualquier nombre, ej: "Mi app de canciones") y pulsa <strong>crear</strong>.</li>
+          <li>Copia los valores <strong>App api_id</strong> y <strong>App api_hash</strong> que te aparecen y pegalos abajo.</li>
+        </ol>
+      </div>
+
+      <label>API_ID
+        <input type="text" id="api_id" autocomplete="off" spellcheck="false">
+      </label>
+
+      <label>API_HASH
+        <input type="text" id="api_hash" autocomplete="off" spellcheck="false">
+      </label>
+
+      <button id="btn-login" class="btn-terminal">CONECTAR</button>
+      <button id="btn-volver-telefono" class="btn-terminal btn-logout">&larr; VOLVER</button>
+      <p class="mensaje-error" id="error-login"></p>
+    </section>
+
+    <!-- PANTALLA 3: código de verificación -->
+    <section id="pantalla-codigo" class="pantalla oculto">
+      <p class="etiqueta">&gt; verificar_codigo</p>
+
+      <label>CODIGO RECIBIDO
+        <input type="text" id="codigo" autocomplete="off" spellcheck="false">
+      </label>
+
+      <label id="label-password" class="oculto">CONTRASEÑA 2FA
+        <input type="password" id="contrasena" autocomplete="off">
+      </label>
+
+      <button id="btn-verificar" class="btn-terminal">VERIFICAR</button>
+      <p class="mensaje-error" id="error-codigo"></p>
+    </section>
+
+    <!-- PANTALLA 4: buscador -->
+    <section id="pantalla-buscar" class="pantalla oculto">
+      <div class="buscador-wrap">
+        <span class="prompt-symbol">&gt;</span>
+        <input type="text" id="mensaje" class="input-buscar" placeholder="Buscar" autocomplete="off" spellcheck="false">
+      </div>
+
+      <div id="salida" class="salida"></div>
+
+      <button id="btn-logout" class="btn-terminal btn-logout">CERRAR SESION</button>
+    </section>
+
+  </main>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

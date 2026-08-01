@@ -1,0 +1,361 @@
+/* ============================================================
+   style.css - Estilo visual "hacker / terminal futurista"
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+  --verde: #00ff9c;
+  --verde-tenue: #00ff9c66;
+  --cian: #33fff0;
+  --fondo: #050807;
+  --fondo-panel: #0a0f0dcc;
+  --rojo-error: #ff4d4d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--fondo);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--verde);
+  overflow: hidden;
+}
+
+/* Canvas de fondo con la lluvia de caracteres estilo Matrix */
+#matrix-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+/* Efecto de líneas de escaner (CRT) por encima de todo */
+.crt-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+.terminal {
+  position: relative;
+  z-index: 10;
+  width: min(480px, 92vw);
+  margin: 6vh auto;
+  background: var(--fondo-panel);
+  border: 1px solid var(--verde-tenue);
+  border-radius: 8px;
+  box-shadow: 0 0 25px #00ff9c33, inset 0 0 30px #00ff9c11;
+  padding: 0 0 26px 0;
+  backdrop-filter: blur(2px);
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--verde-tenue);
+}
+
+.dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.header-title {
+  margin-left: 10px;
+  font-size: 0.8rem;
+  color: var(--verde-tenue);
+  letter-spacing: 1px;
+}
+
+.pantalla {
+  padding: 26px 26px 4px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: aparecer 0.35s ease-out;
+}
+
+.oculto {
+  display: none !important;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.etiqueta {
+  color: var(--cian);
+  font-size: 0.85rem;
+  margin: 0 0 4px 0;
+  text-shadow: 0 0 6px var(--cian);
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  color: var(--verde-tenue);
+}
+
+.hint {
+  color: #4d6b5e;
+  font-size: 0.7rem;
+}
+
+input[type="text"], input[type="password"] {
+  background: #000;
+  border: 1px solid var(--verde-tenue);
+  color: var(--verde);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  border-radius: 4px;
+  outline: none;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+  border-color: var(--verde);
+  box-shadow: 0 0 10px var(--verde-tenue);
+}
+
+.btn-terminal {
+  margin-top: 6px;
+  background: transparent;
+  border: 1px solid var(--verde);
+  color: var(--verde);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+}
+
+.btn-terminal:hover {
+  background: var(--verde);
+  color: #001008;
+  box-shadow: 0 0 16px var(--verde);
+}
+
+.btn-terminal:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+
+.btn-logout {
+  border-color: #4d6b5e;
+  color: #4d6b5e;
+  font-size: 0.7rem;
+  margin-top: 18px;
+  padding: 6px;
+}
+.btn-logout:hover {
+  background: #4d6b5e;
+  color: #000;
+  box-shadow: none;
+}
+
+.instrucciones {
+  border: 1px dashed var(--verde-tenue);
+  border-radius: 4px;
+  padding: 12px 14px;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--verde-tenue);
+}
+
+.instrucciones p {
+  margin: 0 0 8px 0;
+}
+
+.instrucciones strong {
+  color: var(--verde);
+}
+
+.instrucciones ol {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.instrucciones li {
+  margin-bottom: 6px;
+}
+
+.instrucciones a {
+  color: var(--cian);
+  text-decoration: underline;
+}
+
+#telefono-recordatorio {
+  color: var(--cian);
+}
+
+.mensaje-error {
+  color: var(--rojo-error);
+  font-size: 0.78rem;
+  min-height: 1.1em;
+  margin: 0;
+  text-shadow: 0 0 6px var(--rojo-error);
+}
+
+.buscador-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--verde);
+  border-radius: 4px;
+  padding: 4px 12px;
+  box-shadow: 0 0 14px var(--verde-tenue);
+}
+
+.prompt-symbol {
+  color: var(--cian);
+}
+
+.input-buscar {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--verde);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.05rem;
+  padding: 10px 0;
+  outline: none;
+}
+
+.input-buscar::placeholder {
+  color: var(--verde-tenue);
+  letter-spacing: 2px;
+}
+
+.salida {
+  min-height: 120px;
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px dashed var(--verde-tenue);
+  border-radius: 4px;
+  padding: 14px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.salida .linea-sistema {
+  color: var(--verde-tenue);
+}
+
+/* Cada busqueda (o cada boton pulsado) es un "turno" independiente,
+   separado visualmente del anterior para que no se mezcle todo. */
+.turno {
+  padding: 10px 0;
+  border-bottom: 1px dashed #16241d;
+}
+
+.turno:first-child {
+  padding-top: 0;
+}
+
+.turno:last-child {
+  border-bottom: none;
+}
+
+.linea-usuario {
+  color: var(--cian);
+  margin-bottom: 8px;
+  word-break: break-word;
+}
+
+.cuerpo-respuesta {
+  color: var(--verde);
+}
+
+/* Botones inline del bot: cada fila de Telegram se dibuja como una
+   fila propia, y dentro de cada fila los botones se apilan uno
+   debajo de otro. */
+.botones-bot {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fila-botones {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.btn-inline-bot {
+  background: transparent;
+  border: 1px solid var(--verde-tenue);
+  color: var(--verde);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.82rem;
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn-inline-bot::before {
+  content: "› ";
+  color: var(--cian);
+}
+
+.btn-inline-bot:hover:not(:disabled) {
+  border-color: var(--verde);
+  background: #00ff9c14;
+}
+
+.btn-inline-bot:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.salida .cursor-parpadea::after {
+  content: "_";
+  animation: parpadeo 1s step-end infinite;
+}
+
+@keyframes parpadeo {
+  50% { opacity: 0; }
+}
+
+/* Scrollbar estilo terminal */
+.salida::-webkit-scrollbar {
+  width: 6px;
+}
+.salida::-webkit-scrollbar-thumb {
+  background: var(--verde-tenue);
+  border-radius: 3px;
+}
